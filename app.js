@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-let artistArray = [];
+let artistArray = ["checkcheck", 12, 12, "thisIsOnlyATest"];
 
 app.get("/", function(req, res){
     res.status(200).json({
