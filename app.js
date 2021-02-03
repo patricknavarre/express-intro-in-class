@@ -143,22 +143,26 @@ app.put("/team/edit-players/:teamID", function (req, res) {
 });
 
 app.delete("/team/delete-player-by-name/:teamID", function (req, res) {
-    let teamIDNumber = Number(req.params.teamID);
-    let name = req.params.id;
-    
-    teamArray.forEach((team) => {
-        if (team.id === teamIDNumber) {
-            let singleTeamArray = team.playersArray;
-            singleTeamArray.forEach((player) => {
-                if (player.player === req.body.player) {
-                    team.playersArray.splice(name -1, 1);
-                }
-            });
-        }
-    });
-    console.log(JSON.stringify(teamArray))
-    
-  res.json(teamArray);
+  let teamIDNumber = Number(req.params.teamID);
+  let foundTeamPlayerArray;
+  let targetTeamIndex;
+
+  teamArray.forEach((item, index) => {
+    if (item.id === teamIDNumber) {
+      foundTeamPlayerArray = item.playersArray;
+      targetTeamIndex = index;
+      return;
+    }
+  });
+
+  let filteredTeamPlayerArray = foundTeamPlayerArray.filter(
+    (item) => item.player !== req.body.player
+  );
+
+  teamArray[targetTeamIndex].playersArray = filteredTeamPlayerArray;
+
+  res.send(teamArray);
+  console.log(JSON.stringify(teamArray));
 });
 
 // build in a return to exit out
